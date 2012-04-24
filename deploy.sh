@@ -1,2 +1,2 @@
 #! /bin/sh
-cp -r web/* /var/www/html/
+cp -r /home/michael/tetris/web/* /var/www/html/
