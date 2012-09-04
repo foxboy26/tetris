@@ -2,7 +2,7 @@ const BLOCK_SIZE = 20;
 const COL_NUM = 10;
 const ROW_NUM = 20;
 
-var TYPE = 
+var Type = 
 {
   I : 0,
   O : 1,
@@ -21,7 +21,7 @@ var STATE =
   NORTH : 3
 };
 
-var COLOR = new Array("cyan", "yellow", "purple", "green", "red", "blue", "orange");
+var Color = new Array("cyan", "yellow", "purple", "green", "red", "blue", "orange");
 
 var canvas = null;
 var ctx = null;
@@ -78,7 +78,7 @@ function onKeyUpHandler(evt)
 }
 
 Game = {
-  init: function()
+  init : function()
   {
     canvas = $("canvas");
     ctx = canvas.getContext("2d");
@@ -102,7 +102,18 @@ Game = {
     {
       pos : {x : 0, y : 0},
       type : -1,
-      orientation: -1,
+      orientation: -1
+      //width = BLOCK_SIZE * 3;
+      //height = BLOCK_SIZE * 3;
+      //blocks = new Array(width);
+      //for (var i = 0; i < width; i++)
+      //{
+      //  blocks[i] = new Array(height);
+      //  for (var j = 0; j < height; j++)
+      //  {
+      //    blocks[i][j] = -1;
+      //  }
+      //}
     };
   },
 
@@ -136,7 +147,14 @@ Game = {
     }
     else if (upKey)
     {
-      tet.orientation = (tet.orientation + 1) % 4;
+      if (tet.pos.x > 0 && tet.pos.x + BLOCK_SIZE < canvas.width)
+      {
+        tet.orientation = (tet.orientation + 1) % 4;
+      }
+    }
+    else if (downKey)
+    {
+      tet.pos.y += (3 * BLOCK_SIZE);
     }
     else if (tet.pos.y < canvas.height)
     {
@@ -171,15 +189,15 @@ function generateNextTet()
 
   switch (tet.type)
   {
-  case TYPE.I:
-  case TYPE.O:
+  case Type.I:
+  case Type.O:
     tet.pos = {x : COL_NUM * BLOCK_SIZE / 2, y : 0};
     break;
-  case TYPE.T:
-  case TYPE.S:
-  case TYPE.Z:
-  case TYPE.J:
-  case TYPE.L:
+  case Type.T:
+  case Type.S:
+  case Type.Z:
+  case Type.J:
+  case Type.L:
     tet.pos = {x : (COL_NUM / 2 - 1) * BLOCK_SIZE, y : 0};
     break;
   }
@@ -193,7 +211,7 @@ function renderBoard(board)
     {
       if (board[i][j] != -1)
       {
-        renderBlock(i * BLOCK_SIZE, j, COLOR[board[i][j]]);
+        renderBlock(i * BLOCK_SIZE, j, Color[board[i][j]]);
       }
     }
   }
@@ -203,25 +221,25 @@ function renderTetromino(type, pos, orientation)
 {
   switch (type)
   {
-  case TYPE.I:
+  case Type.I:
     renderITet(pos, orientation);
     break;
-  case TYPE.O:
+  case Type.O:
     renderOTet(pos, orientation);
     break;
-  case TYPE.T:
+  case Type.T:
     renderTTet(pos, orientation);
     break;
-  case TYPE.S:
+  case Type.S:
     renderSTet(pos, orientation);
     break;
-  case TYPE.Z:
+  case Type.Z:
     renderZTet(pos, orientation);
     break;
-  case TYPE.J:
+  case Type.J:
     renderJTet(pos, orientation);
     break;
-  case TYPE.L:
+  case Type.L:
     renderLTet(pos, orientation);
     break;
   default:
